@@ -1,5 +1,6 @@
 name: Deploy to GitHub Pages
 
+# Trigger this action on pushes to the 'main' branch
 on:
   push:
     branches:
@@ -10,25 +11,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Check out the repository code
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # Step 2: Set up Node.js version
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '16'  # or the Node.js version your project requires
 
+    # Step 3: Install dependencies
+    # Assuming your React project is inside the 'my-spa' folder
     - name: Install dependencies
-    run: |
-      cd my-spa  
-       npm install
+      run: |
+        cd my-spa
+        npm install
 
-
+    # Step 4: Build the project
     - name: Build project
-      run: npm run build
+      run: |
+        cd my-spa
+        npm run build
 
+    # Step 5: Deploy to GitHub Pages
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build
+        publish_dir: ./my-spa/build  # Path to the build output
